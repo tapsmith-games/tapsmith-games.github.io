@@ -164,6 +164,46 @@ const PLAY_ICON = `<svg class="play" viewBox="0 0 16 16" aria-hidden="true" focu
 const art = (g, sizes) =>
   `src="/img/${g.slug}/key-art-1600.webp" srcset="/img/${g.slug}/key-art-800.webp 800w, /img/${g.slug}/key-art-1600.webp 1600w" sizes="${sizes}" width="1600" height="781"`;
 
+// --- Круг стихий: пять точек по окружности (от верхней по часовой), стрелки — дуги между соседями ---
+
+const RING_R = 36;
+const ringAngle = (i) => ((-90 + 72 * i) * Math.PI) / 180;
+const round = (v) => Math.round(v * 100) / 100;
+const ringPoint = (i, r = RING_R) => [round(50 + r * Math.cos(ringAngle(i))), round(50 + r * Math.sin(ringAngle(i)))];
+
+function ringArrows() {
+  const gap = (21 * Math.PI) / 180; // отступ дуги от центра значка
+  const arcs = [0, 1, 2, 3, 4]
+    .map((i) => {
+      const a1 = ringAngle(i) + gap;
+      const a2 = ringAngle(i + 1) - gap;
+      const p = (a) => `${round(50 + RING_R * Math.cos(a))} ${round(50 + RING_R * Math.sin(a))}`;
+      return `<path class="arc" d="M${p(a1)} A${RING_R} ${RING_R} 0 0 1 ${p(a2)}" marker-end="url(#ring-head)"/>`;
+    })
+    .join("");
+  return `<svg class="ring-arrows" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><defs><marker id="ring-head" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto-start-reverse"><path d="M1 1.2L8.5 5 1 8.8z"/></marker></defs><circle class="track" cx="50" cy="50" r="${RING_R}"/>${arcs}</svg>`;
+}
+
+// --- Горн на главной: свечение и искры. Случайность с постоянным зерном — сборка не меняет страницу зря. ---
+
+function forge(count = 36) {
+  let seed = 7;
+  const rnd = () => {
+    seed = (seed * 16807) % 2147483647;
+    return (seed - 1) / 2147483646;
+  };
+  const sparks = Array.from({ length: count }, () => {
+    const x = round(20 + rnd() * 60);
+    const size = round(2.5 + rnd() * 4);
+    const dur = round(3.2 + rnd() * 3.6);
+    const delay = round(-rnd() * 7);
+    const drift = round((rnd() - 0.5) * 120);
+    const rise = round(220 + rnd() * 220);
+    return `<i style="--x:${x}%;--s:${size}px;--t:${dur}s;--d:${delay}s;--dx:${drift}px;--rise:-${rise}px"></i>`;
+  }).join("");
+  return `<div class="forge" aria-hidden="true"><span class="forge-glow"></span><span class="forge-core"></span>${sparks}</div>`;
+}
+
 // --- Страницы ---
 
 function homePage(lang) {
@@ -188,7 +228,7 @@ function homePage(lang) {
         </article>`;
   }).join("\n");
   const body = `      <section class="intro">
-        <svg class="intro-spark" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><path d="M100 4l12 72 72 24-72 24-12 72-12-72-72-24 72-24z"/><path d="M100 52l5 33 33 15-33 15-5 33-5-33-33-15 33-15z" class="core"/></svg>
+        ${forge()}
         <p class="eyebrow">${t.eyebrow}</p>
         <h1 class="studio">${esc(config.studio)}</h1>
         <p class="tagline">${t.tagline}</p>
@@ -206,8 +246,11 @@ function gamePage(lang, g) {
   const x = g.text[lang];
   const keys = ["a", "b", "c", "d", "e"];
   const cycle = keys
-    .map((k, i) => `<li><img src="/img/${g.slug}/element-${k}.webp" alt="" width="96" height="96" loading="lazy"><span>${esc(x.elements[i])}</span></li>`)
-    .join("\n          ");
+    .map((k, i) => {
+      const [px, py] = ringPoint(i);
+      return `<li style="--x:${px}%;--y:${py}%"><img src="/img/${g.slug}/element-${k}.webp" alt="" width="96" height="96" loading="lazy"><span>${esc(x.elements[i])}</span></li>`;
+    })
+    .join("\n            ");
   const facts = x.facts
     .map(([value, label]) => `<li><strong>${esc(value)}</strong><span>${esc(label)}</span></li>`)
     .join("\n          ");
@@ -234,9 +277,13 @@ function gamePage(lang, g) {
           <h2 id="cycle">${esc(x.cycleTitle)}</h2>
           <p>${esc(x.cycleText)}</p>
         </div>
-        <ol class="ring">
-          ${cycle}
-        </ol>
+        <div class="ring-wrap">
+          ${ringArrows()}
+          <ol class="ring">
+            ${cycle}
+          </ol>
+          <p class="ring-hint" aria-hidden="true"><svg class="ring-hint-arrow" viewBox="0 0 40 12" focusable="false"><path d="M2 6h30"/><path class="head" d="M30 1.5L38 6l-8 4.5z"/></svg>${esc(x.ringHint)}</p>
+        </div>
       </section>
       <section class="modes-section" aria-labelledby="modes">
         <div class="section-head">

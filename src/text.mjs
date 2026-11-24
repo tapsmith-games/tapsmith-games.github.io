@@ -96,6 +96,7 @@ export const GAMES = [
           "Five schools of ninja, one hero to lead them. Each element has its own base, squad and ten leagues to climb. Battles run by themselves, and income keeps coming while you're away.",
         cycleTitle: "Five elements, one cycle",
         cycleText: "Each element beats the next one, and Water beats Fire. In PvP you see the elements of every round before the fight.",
+        ringHint: "beats",
         elements: ["Fire", "Wind", "Lightning", "Earth", "Water"],
         facts: [
           ["5", "elements, each with its own base and squad"],
@@ -116,6 +117,7 @@ export const GAMES = [
           "Пять школ ниндзя и один герой во главе. У каждой стихии своя база, свой отряд и десять лиг. Бои идут сами, а доход копится, пока вас нет в игре.",
         cycleTitle: "Пять стихий, один круг",
         cycleText: "Каждая стихия сильнее следующей, а Вода — сильнее Огня. В PvP стихии каждого раунда видны до боя.",
+        ringHint: "сильнее",
         elements: ["Огонь", "Ветер", "Молния", "Земля", "Вода"],
         facts: [
           ["5", "стихий, у каждой своя база и отряд"],
