@@ -6,6 +6,11 @@ export const LANGS = ["en", "ru"];
 export const UI = {
   en: {
     langName: "English",
+    eyebrow: "Mobile game studio",
+    supportNote: "Questions, purchases, lost progress",
+    privacyNote: "What data the game collects and why",
+    termsNote: "Rules for players and purchases",
+    deleteNote: "In the game or by email",
     tagline: "We make mobile games: short sessions, long progress.",
     games: "Games",
     soon: "Coming soon to Google Play",
@@ -25,6 +30,11 @@ export const UI = {
   },
   ru: {
     langName: "Русский",
+    eyebrow: "Студия мобильных игр",
+    supportNote: "Вопросы, покупки, потерянный прогресс",
+    privacyNote: "Какие данные собирает игра и зачем",
+    termsNote: "Правила для игроков и покупок",
+    deleteNote: "В игре или по почте",
     tagline: "Мы делаем мобильные игры: короткие заходы, долгий прогресс.",
     games: "Игры",
     soon: "Скоро в Google Play",
@@ -87,6 +97,12 @@ export const GAMES = [
         cycleTitle: "Five elements, one cycle",
         cycleText: "Each element beats the next one, and Water beats Fire. In PvP you see the elements of every round before the fight.",
         elements: ["Fire", "Wind", "Lightning", "Earth", "Water"],
+        facts: [
+          ["5", "elements, each with its own base and squad"],
+          ["10", "leagues to climb in every element"],
+          ["PvP", "arena, hero duels and a weekly tournament"],
+          ["12", "languages"],
+        ],
         modesTitle: "Play with others, every week",
         modes: [
           ["clanbattle", "Pagoda Siege", "Your clan storms the enemy pagoda twice a week."],
@@ -101,6 +117,12 @@ export const GAMES = [
         cycleTitle: "Пять стихий, один круг",
         cycleText: "Каждая стихия сильнее следующей, а Вода — сильнее Огня. В PvP стихии каждого раунда видны до боя.",
         elements: ["Огонь", "Ветер", "Молния", "Земля", "Вода"],
+        facts: [
+          ["5", "стихий, у каждой своя база и отряд"],
+          ["10", "лиг в каждой стихии"],
+          ["PvP", "арена, дуэли героев и турнир каждую неделю"],
+          ["12", "языков"],
+        ],
         modesTitle: "Каждую неделю — с другими игроками",
         modes: [
           ["clanbattle", "Битва за пагоду", "Клан штурмует пагоду соперников дважды в неделю."],

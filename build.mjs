@@ -81,12 +81,13 @@ function link(url) {
 
 // --- Оболочка страницы ---
 
-function page({ lang, path: here, alt, title, description, body, wide = false }) {
+function page({ lang, path: here, alt, title, description, body, wide = false, image = null }) {
   const t = UI[lang];
   const other = LANGS.filter((l) => l !== lang)
-    .map((l) => `<a class="lang" href="${alt(l)}" hreflang="${l}" lang="${l}">${UI[l].langName}</a>`)
+    .map((l) => `<a class="lang" href="${alt(l)}" hreflang="${l}" lang="${l}"><span class="long">${UI[l].langName}</span><span class="short" aria-hidden="true">${l.toUpperCase()}</span></a>`)
     .join("");
   const alternates = LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${esc(absolute(alt(l)))}">`).join("\n    ");
+  const shareImage = image ? `\n    <meta property="og:image" content="${esc(absolute(image))}">\n    <meta name="twitter:card" content="summary_large_image">` : "";
   return `<!doctype html>
 <html lang="${lang}">
   <head>
@@ -94,17 +95,24 @@ function page({ lang, path: here, alt, title, description, body, wide = false })
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${esc(title)}</title>
     <meta name="description" content="${esc(description)}">
+    <meta name="theme-color" content="#0b0f1f">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="${esc(config.studio)}">
+    <meta property="og:title" content="${esc(title)}">
+    <meta property="og:description" content="${esc(description)}">
+    <meta property="og:url" content="${esc(absolute(alt(lang)))}">${shareImage}
     ${alternates}
-    <link rel="icon" href="/favicon.png">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon.png" sizes="64x64">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;600;700&display=swap">
     <link rel="stylesheet" href="/style.css">
   </head>
-  <body>
+  <body class="page-${here}">
     <a class="skip" href="#main">${t.skip}</a>
     <header class="bar">
-      <a class="wordmark" href="${homeUrl(lang)}">${esc(config.studio)}</a>
+      <a class="wordmark" href="${homeUrl(lang)}">${MARK}<span>${esc(config.studio)}</span></a>
       <nav aria-label="${t.help}">
         <a href="${supportUrl(lang)}"${here === "support" ? ' aria-current="page"' : ""}>${t.support}</a>
         ${other}
@@ -114,60 +122,83 @@ function page({ lang, path: here, alt, title, description, body, wide = false })
 ${body}
     </main>
     <footer class="foot">
-      <p>${config.contactEmail ? `${t.contact} ${emailLink()}` : t.contactNoEmail}</p>
-      <p>© ${new Date().getUTCFullYear()} ${esc(config.studio)}</p>
+      <div class="foot-brand">
+        <a class="wordmark" href="${homeUrl(lang)}">${MARK}<span>${esc(config.studio)}</span></a>
+        <p>${config.contactEmail ? `${t.contact} ${emailLink()}` : t.contactNoEmail}</p>
+      </div>
+      <nav class="foot-links" aria-label="${t.allGames}">
+        ${GAMES.map((g) => `<a href="${gameUrl(lang, g)}">${esc(g.shortName)}</a>`).join("\n        ")}
+        <a href="${supportUrl(lang)}">${t.support}</a>
+      </nav>
+      <p class="foot-copy">© ${new Date().getUTCFullYear()} ${esc(config.studio)}</p>
     </footer>
   </body>
 </html>
 `;
 }
 
+// Знак студии: искра над наковальней. Цвета — из style.css (currentColor и --accent).
+const MARK = `<svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 2.5l1.6 5.3 5.3 1.6-5.3 1.6L16 16.3l-1.6-5.3-5.3-1.6 5.3-1.6z" class="mark-spark"/><path d="M4 19h21.5c0 2.6-2.1 4.5-4.7 4.5h-2.3l1.8 4.5H11.7l1.8-4.5H9.6C6.5 23.5 4 21.5 4 19z" class="mark-anvil"/></svg>`;
+
 function helpLinks(lang, g) {
   const t = UI[lang];
+  const item = (href, title, note) => `<li><a href="${href}"><strong>${title}</strong><span>${note}</span></a></li>`;
   return `<ul class="help">
-        <li><a href="${supportUrl(lang)}">${t.support}</a></li>
-        <li><a href="${docUrl(lang, g, "privacy")}">${t.privacy}</a></li>
-        <li><a href="${docUrl(lang, g, "terms")}">${t.terms}</a></li>
-        <li><a href="${docUrl(lang, g, "delete-account")}">${t.deleteAccount}</a></li>
+        ${item(supportUrl(lang), t.support, t.supportNote)}
+        ${item(docUrl(lang, g, "privacy"), t.privacy, t.privacyNote)}
+        ${item(docUrl(lang, g, "terms"), t.terms, t.termsNote)}
+        ${item(docUrl(lang, g, "delete-account"), t.deleteAccount, t.deleteNote)}
       </ul>`;
 }
 
 function storeButton(lang, g) {
   const t = UI[lang];
   return g.googlePlay
-    ? `<a class="store" href="${esc(g.googlePlay)}">Google Play</a>`
-    : `<p class="store soon">${t.soon}</p>`;
+    ? `<a class="store" href="${esc(g.googlePlay)}">${PLAY_ICON}<span>Google Play</span></a>`
+    : `<p class="store soon">${PLAY_ICON}<span>${t.soon}</span></p>`;
 }
+
+// Нейтральный треугольник «запуск» — не логотип Google Play (его можно ставить только официальным бейджем).
+const PLAY_ICON = `<svg class="play" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.6v10.8c0 .5.5.8.9.5l8.4-5.4a.6.6 0 000-1L4.9 2.1c-.4-.3-.9 0-.9.5z"/></svg>`;
+
+const art = (g, sizes) =>
+  `src="/img/${g.slug}/key-art-1600.webp" srcset="/img/${g.slug}/key-art-800.webp 800w, /img/${g.slug}/key-art-1600.webp 1600w" sizes="${sizes}" width="1600" height="781"`;
 
 // --- Страницы ---
 
 function homePage(lang) {
   const t = UI[lang];
-  const cards = GAMES.map((g) => {
+  const cards = GAMES.map((g, i) => {
     const x = g.text[lang];
-    return `      <article class="game">
-        <a class="game-art" href="${gameUrl(lang, g)}" tabindex="-1" aria-hidden="true">
-          <img src="/img/${g.slug}/key-art-1600.webp" srcset="/img/${g.slug}/key-art-800.webp 800w, /img/${g.slug}/key-art-1600.webp 1600w" sizes="(min-width: 1100px) 1040px, 100vw" alt="" width="1600" height="781">
-        </a>
-        <div class="game-body">
-          <img class="game-icon" src="/img/${g.slug}/icon.webp" alt="" width="72" height="72">
-          <div>
-            <h2><a href="${gameUrl(lang, g)}">${esc(g.name)}</a></h2>
-            <p>${esc(x.short)}</p>
-            ${storeButton(lang, g)}
+    return `        <article class="game">
+          <a class="game-art" href="${gameUrl(lang, g)}" tabindex="-1" aria-hidden="true">
+            <img ${art(g, "(min-width: 1180px) 1120px, 100vw")} alt=""${i ? ' loading="lazy"' : ""}>
+          </a>
+          <div class="game-body">
+            <img class="game-icon" src="/img/${g.slug}/icon.webp" alt="" width="88" height="88">
+            <div class="game-copy">
+              <h3><a href="${gameUrl(lang, g)}">${esc(g.name)}</a></h3>
+              <p>${esc(x.short)}</p>
+            </div>
+            <div class="game-actions">
+              <a class="button" href="${gameUrl(lang, g)}">${t.gamePage}<span aria-hidden="true">→</span></a>
+              ${storeButton(lang, g)}
+            </div>
           </div>
-        </div>
-      </article>`;
+        </article>`;
   }).join("\n");
   const body = `      <section class="intro">
+        <svg class="intro-spark" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><path d="M100 4l12 72 72 24-72 24-12 72-12-72-72-24 72-24z"/><path d="M100 52l5 33 33 15-33 15-5 33-5-33-33-15 33-15z" class="core"/></svg>
+        <p class="eyebrow">${t.eyebrow}</p>
         <h1 class="studio">${esc(config.studio)}</h1>
         <p class="tagline">${t.tagline}</p>
       </section>
-      <section aria-labelledby="games">
-        <h2 id="games" class="section-title">${t.games}</h2>
+      <section class="showcase" aria-labelledby="games">
+        <h2 id="games" class="section-title"><span>${t.games}</span><span class="count">${String(GAMES.length).padStart(2, "0")}</span></h2>
 ${cards}
       </section>`;
-  return page({ lang, path: "home", alt: homeUrl, title: config.studio, description: t.tagline, body, wide: true });
+  const image = `/img/${GAMES[0].slug}/key-art-1600.webp`;
+  return page({ lang, path: "home", alt: homeUrl, title: config.studio, description: t.tagline, body, wide: true, image });
 }
 
 function gamePage(lang, g) {
@@ -175,40 +206,54 @@ function gamePage(lang, g) {
   const x = g.text[lang];
   const keys = ["a", "b", "c", "d", "e"];
   const cycle = keys
-    .map((k, i) => `<li><img src="/img/${g.slug}/element-${k}.webp" alt="" width="80" height="80"><span>${esc(x.elements[i])}</span></li>`)
+    .map((k, i) => `<li><img src="/img/${g.slug}/element-${k}.webp" alt="" width="96" height="96" loading="lazy"><span>${esc(x.elements[i])}</span></li>`)
+    .join("\n          ");
+  const facts = x.facts
+    .map(([value, label]) => `<li><strong>${esc(value)}</strong><span>${esc(label)}</span></li>`)
     .join("\n          ");
   const modes = x.modes
     .map(([img, name, text]) => `<figure class="mode">
           <img src="/img/${g.slug}/mode-${img}.webp" alt="" width="900" height="600" loading="lazy">
-          <figcaption><strong>${esc(name)}</strong> ${esc(text)}</figcaption>
+          <figcaption><strong>${esc(name)}</strong><span>${esc(text)}</span></figcaption>
         </figure>`)
     .join("\n        ");
   const body = `      <section class="hero">
-        <img class="hero-art" src="/img/${g.slug}/key-art-1600.webp" srcset="/img/${g.slug}/key-art-800.webp 800w, /img/${g.slug}/key-art-1600.webp 1600w" sizes="100vw" alt="" width="1600" height="781">
+        <img class="hero-art" ${art(g, "100vw")} alt="">
         <div class="hero-text">
+          <img class="hero-icon" src="/img/${g.slug}/icon.webp" alt="" width="72" height="72">
           <h1>${esc(g.name)}</h1>
           <p>${esc(x.about)}</p>
           ${storeButton(lang, g)}
         </div>
       </section>
+      <ul class="facts" aria-label="${esc(g.shortName)}">
+          ${facts}
+      </ul>
       <section class="cycle" aria-labelledby="cycle">
-        <h2 id="cycle">${esc(x.cycleTitle)}</h2>
-        <p>${esc(x.cycleText)}</p>
+        <div class="section-head">
+          <h2 id="cycle">${esc(x.cycleTitle)}</h2>
+          <p>${esc(x.cycleText)}</p>
+        </div>
         <ol class="ring">
           ${cycle}
         </ol>
       </section>
-      <section aria-labelledby="modes">
-        <h2 id="modes">${esc(x.modesTitle)}</h2>
+      <section class="modes-section" aria-labelledby="modes">
+        <div class="section-head">
+          <h2 id="modes">${esc(x.modesTitle)}</h2>
+        </div>
         <div class="modes">
         ${modes}
         </div>
       </section>
-      <section aria-labelledby="help">
-        <h2 id="help">${t.help}</h2>
+      <section class="help-section" aria-labelledby="help">
+        <div class="section-head">
+          <h2 id="help">${t.help}</h2>
+        </div>
         ${helpLinks(lang, g)}
       </section>`;
-  return page({ lang, path: "game", alt: (l) => gameUrl(l, g), title: g.name, description: x.short, body, wide: true });
+  const image = `/img/${g.slug}/key-art-1600.webp`;
+  return page({ lang, path: "game", alt: (l) => gameUrl(l, g), title: g.name, description: x.short, body, wide: true, image });
 }
 
 function docPage(lang, g, doc) {
