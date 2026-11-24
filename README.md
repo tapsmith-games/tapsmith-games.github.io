@@ -51,3 +51,9 @@ Settings → Pages → Source: **GitHub Actions**.
 `/<игра>/privacy/`, `/<игра>/terms/`, `/<игра>/delete-account/` и почту поддержки. Те же ссылки — в Google Play Console.
 
 Тексты документов главные в репозитории игры (`legal/`): правка там → `npm run import-legal` здесь.
+
+## Логотип
+
+Герб студии — `brand/crest-source.png` (исходник, тёмный фон). `node scripts/crest.cjs <путь к sharp>` делает из него
+`brand/crest.png` (прозрачный фон), знак для шапки `public/img/brand/crest-144.*`, иконки вкладки (`favicon-32.png`,
+`favicon.png`), `apple-touch-icon.png` и `brand/play-developer-icon-512.png` — иконку страницы разработчика в Play Console.

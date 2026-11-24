@@ -102,8 +102,9 @@ function page({ lang, path: here, alt, title, description, body, wide = false, i
     <meta property="og:description" content="${esc(description)}">
     <meta property="og:url" content="${esc(absolute(alt(lang)))}">${shareImage}
     ${alternates}
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="icon" href="/favicon.png" sizes="64x64">
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/favicon.png" sizes="64x64" type="image/png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;600;700&display=swap">
@@ -137,8 +138,8 @@ ${body}
 `;
 }
 
-// Знак студии: искра над наковальней. Цвета — из style.css (currentColor и --accent).
-const MARK = `<svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 2.5l1.6 5.3 5.3 1.6-5.3 1.6L16 16.3l-1.6-5.3-5.3-1.6 5.3-1.6z" class="mark-spark"/><path d="M4 19h21.5c0 2.6-2.1 4.5-4.7 4.5h-2.3l1.8 4.5H11.7l1.8-4.5H9.6C6.5 23.5 4 21.5 4 19z" class="mark-anvil"/></svg>`;
+// Знак студии — герб (щит с молотами), исходник и все размеры — brand/.
+const MARK = `<img class="mark" src="/img/brand/crest-144.webp" alt="" width="125" height="144">`;
 
 function helpLinks(lang, g) {
   const t = UI[lang];

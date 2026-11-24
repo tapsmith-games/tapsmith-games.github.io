@@ -170,23 +170,16 @@ mark.todo {
 }
 
 .mark {
-  width: 28px;
-  height: 28px;
+  height: 36px;
+  width: auto;
   flex: none;
+  filter: drop-shadow(0 0 10px rgba(244, 140, 50, 0.25));
+  transition: transform 0.4s var(--ease), filter 0.4s var(--ease);
 }
 
-.mark-spark {
-  fill: var(--accent);
-  transform-origin: 16px 9px;
-  transition: transform 0.5s var(--ease);
-}
-
-.mark-anvil {
-  fill: currentColor;
-}
-
-.wordmark:hover .mark-spark {
-  transform: rotate(45deg) scale(1.1);
+.wordmark:hover .mark {
+  transform: rotate(-6deg) scale(1.06);
+  filter: drop-shadow(0 0 14px rgba(244, 140, 50, 0.5));
 }
 
 .bar nav {
@@ -1227,8 +1220,7 @@ a.store {
   }
 
   .mark {
-    width: 24px;
-    height: 24px;
+    height: 30px;
   }
 
   .ring li {
