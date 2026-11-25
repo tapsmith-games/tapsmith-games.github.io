@@ -24,6 +24,8 @@ This policy explains what data the game **Ninja Elements: Idle RPG** ("the game"
 | Which version of these terms you accepted and when, and your confirmation that you are 13 or older | To prove consent and ask again when the terms change |
 | IP address — **not stored in our database**; used only in server memory | To protect the game from bots and abuse, and to determine your country (using a local table on our server; the address is not sent to any other service) |
 
+If you write to our support (the Support button in the game settings opens your email app), we receive your email address, your message and the technical details the game adds to the email: your player ID, the game version, your device model, operating system version and language. We use them only to answer you and fix the problem, and delete the correspondence when it is no longer needed.
+
 Our hosting provider may keep technical request logs, which can include IP addresses, for a limited time for security and operation of the service.
 
 Game reminders (for example "your offline rewards are full") are scheduled by the game on your device. They do not require a notification token, and you can turn them off in the game settings or in your device settings.
