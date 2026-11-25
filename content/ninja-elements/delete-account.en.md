@@ -1,4 +1,4 @@
-# Delete your account — Ninja Elements: Idle RPG
+# Delete your account or data — Ninja Elements: Idle RPG
 
 Developer: **Tapsmith Games**
 
@@ -20,7 +20,13 @@ If you no longer have the game installed, email **{{CONTACT_EMAIL}}** with the s
 
 We may ask a question to make sure the account is yours, and we delete it within 30 days.
 
-## What is deleted
+## Delete some of your data and keep the account
+
+- **Clan chat messages:** in the game, tap **Delete** under your message.
+- **Hidden players:** Profile → Settings → **Hidden players** → **Unhide**.
+- **Email address you entered, or any other data:** email **{{CONTACT_EMAIL}}** with the subject "Delete my data", your player ID and what you want deleted. We delete it within 30 days; copies in server backups are overwritten within 35 days.
+
+## What is deleted with the account
 
 Your account, in-game name, avatar, progress (elements, fighters, items, currencies, leagues), quests and achievements, our records of your purchases, statistics, your clan chat messages, reports sent by you or about you, and your list of hidden players.
 
