@@ -19,6 +19,7 @@ This policy explains what data the game **Ninja Elements: Idle RPG** ("the game"
 | Country (two letters, e.g. US) — from the region in your device settings or, if that is missing, from your IP address | Statistics by country |
 | Moderation records: an account block or a chat ban, its reason and end date | To protect players from rule violations |
 | Clan chat messages you send | To show them to your clan |
+| Reports you send about other players (the reason and, for a chat message, a copy of its text), reports other players send about you, and the players you hide | To moderate the chat and protect players; messages of players you hide are not shown to you |
 | Email address — **only if you enter it**; it is not verified and not used for marketing | To contact you about your account if you ask us to |
 | Which version of these terms you accepted and when, and your confirmation that you are 13 or older | To prove consent and ask again when the terms change |
 | IP address — **not stored in our database**; used only in server memory | To protect the game from bots and abuse, and to determine your country (using a local table on our server; the address is not sent to any other service) |
@@ -45,7 +46,7 @@ Other players can see your in-game name, avatar, frame, hero appearance, ranking
 
 ## 3. How long we keep data
 
-We keep your data while your account exists. When you delete your account, we immediately delete your game data, the purchase records we keep, statistics and your clan chat messages. Copies may remain in server backups for up to 35 days, after which they are overwritten. Automatic clan chat notices (such as "Player joined the clan") are kept only among the latest 100 messages of a clan and disappear as new messages arrive.
+We keep your data while your account exists. When you delete your account, we immediately delete your game data, the purchase records we keep, statistics, your clan chat messages, reports sent by you or about you, and your list of hidden players. Copies may remain in server backups for up to 35 days, after which they are overwritten. Automatic clan chat notices (such as "Player joined the clan") are kept only among the latest 100 messages of a clan and disappear as new messages arrive.
 
 ## 4. Deleting your account
 

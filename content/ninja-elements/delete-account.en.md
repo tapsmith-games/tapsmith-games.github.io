@@ -22,7 +22,7 @@ We may ask a question to make sure the account is yours, and we delete it within
 
 ## What is deleted
 
-Your account, in-game name, avatar, progress (elements, fighters, items, currencies, leagues), quests and achievements, our records of your purchases, statistics and your clan chat messages.
+Your account, in-game name, avatar, progress (elements, fighters, items, currencies, leagues), quests and achievements, our records of your purchases, statistics, your clan chat messages, reports sent by you or about you, and your list of hidden players.
 
 ## What may remain
 
