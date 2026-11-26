@@ -368,7 +368,7 @@ write("404.html", notFoundPage());
 // GitHub Pages: без Jekyll, файлы отдаются как есть.
 write(".nojekyll", "");
 // AdMob проверяет app-ads.txt в корне сайта разработчика (адрес сайта — в Google Play Console).
-if (/^pub-d{16}$/.test(config.admobPublisherId ?? "")) {
+if (/^pub-\d{16}$/.test(config.admobPublisherId ?? "")) {
   write("app-ads.txt", `google.com, ${config.admobPublisherId}, DIRECT, f08c47fec0942fa0
 `);
 } else {
